@@ -28,7 +28,7 @@ layout: default
 
 <div id="tags">
   <h2>Тэги</h2>
-  {{ page | tags }}
+  {{ page.tags  | join: ', ' }}
 </div>
 
 
