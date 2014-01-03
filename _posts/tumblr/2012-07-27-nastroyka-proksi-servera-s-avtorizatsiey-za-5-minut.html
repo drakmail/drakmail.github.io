@@ -1,0 +1,50 @@
+---
+layout: post
+title: Настройка прокси сервера с авторизацией за 5 минут
+tags: 
+---
+<p>Раньше я думал, что squid сложен в настройке и всячески его избегал. Как оказалось - зря. Настроить HTTP прокси сервер с авторизацией в нём очень просто. Итак, рецепт (проверял на debian, на ubuntu тоже точно работает, в других дистрибутивах нюансы могут отличаться)</p>
+
+<h2>Установка</h2>
+
+<p>Тут как обычно:</p>
+
+<pre><code>$ sudo apt-get install squid
+</code></pre>
+
+<h2>Настройка</h2>
+
+<p>Файл конфигурации squid находится в /etc/squid/ и называется squid.conf. Следующие параметры в нём заслуживают внимания:</p>
+
+<pre><code>http\_port 3128 - устанавливает порт, по какому будет слушать squid.
+http\_access deny all - устанавливает права доступа
+</code></pre>
+
+<p>Если необходимо настроить прокси без авторизации - то достаточно просто изменить http_access с deny all на allow all и перезапустить squid. Так как нам нужен прокси с авторизацией, то ничего не трогаем и идем дальше. Находим секцию <strong>auth_param</strong> и добавляем туда:</p>
+
+<p>auth_param basic program /usr/lib/squid/ncsa_auth /etc/squid/passwdЭта строка указывает squid, какой модуль использовать для авторизации и в каком файле искать логины и пароли.</p>
+
+<p>Создадим файл с логинами и паролями:</p>
+
+<pre><code>$ sudo htpasswd -c /etc/squid/passwd drakmail
+Enter a password for user 'drakmail':
+Again:
+$ sudo htpasswd /etc/squid/passwd mag
+Another password:
+Again:
+</code></pre>
+
+<p>Далее, настроим права доступа. Для этого в секцию ACL надо добавить следующие строки:</p>
+
+<pre><code>acl magUser proxy\_auth mag
+acl drakmailUser proxy\_auth drakmail
+http\_access allow magUser
+http\_access allow drakmailUser
+</code></pre>
+
+<p>После этого остаётся только перезапустить squid:</p>
+
+<pre><code>sudo /etc/init.d/squid restart
+</code></pre>
+
+<p>И наслаждаться настроенным прокси.</p>

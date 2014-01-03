@@ -1,0 +1,9 @@
+---
+layout: post
+title: Обратная сортировка TreeMap в java
+tags:
+- java ee
+- java
+- myslb
+---
+<p>Недавно столкнулся с необходимостью сортировать элементы в некоторых TreeMap в обратном порядке.<br/><br/>descendingMap появился только в Java EE 6, для Java EE 5 такого нет. Поэтому по-быстрому изобрел небольшой костыль&#160;:<br/><br/><code><br/>Comparator &lt; String &gt; reverse = Collections.reverseOrder();<br/>//Создаем компаратор и инициализируем его компаратором из Collections<br/>TreeMap rJR = new TreeMap(reverse);<br/>//Создаем TreeMap с обратным порядком. reverse в конструкторе - выше созданный компаратор с обратным порядком<br/>rJR.putAll(zakJournalRows);<br/>//Добавляем требуемый TreeMap с обычной сортировкой в недавно созданный TreeMap с обратной сортировкой.<br/></code></p><div class="blogger-post-footer"><img width="1" height="1" src="https://blogger.googleusercontent.com/tracker/5828213583843701230-7732403293475893936?l=my-slb.blogspot.com" alt=""/></div>

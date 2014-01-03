@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Escalation to zen - Миграция с ChilliProject на Redmine</title>
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+</head>
+<body>
+  <div class="site">
+    <div class="title">
+      <a href="/">Escalation to zen</a>
+      
+        <a class="extra " href="/index.html">
+          Home
+        </a>
+      
+        <a class="extra " href="/about/">
+          About
+        </a>
+      
+        <a class="extra " href="/tags-cloud.html">
+          Tags
+        </a>
+      
+        <a class="extra " href="/feed.xml">
+          RSS
+        </a>
+      
+        <a class="extra " href="/source/">
+          Source
+        </a>
+      
+    </div>
+  
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.qrcode.min.js"></script>
+
+<button class="get_qr_code">QR код</button>
+<div id="qr"></div>
+<script>
+  $(document).ready(function() {
+    $(".get_qr_code").click(function() {
+      $("#qr").toggle();
+    });
+    $("#qr").qrcode("http://drakmail.ru/2013/11/24/migrate-from-chilliproject-to-redmine.html");
+  });
+</script>
+
+<div id="post">
+  <h1>Миграция с ChilliProject на Redmine</h1>
+  <h2>Вступление</h2>
+
+<p>Всё началось примерно год назад. Redmine в то время находился в периоде стагнации в связи с тем, что часть разработчиков устроила драму и ушла пилить форк под названием ChilliProject. В тот момент я принял решение, которое и стало поводом написать этот пост - я решил перейти с Redmine на ChilliProject.</p>
+
+<p>Сейчас ситуация повторилась, только ChilliProject стал стагнировать, в то время как Redmine&#39;овцы уже перешли на 3-и рельсы, есть планы по переходу на 4-е, большинство плагинов пилятся тоже с оглядкой только лишь на Redmine. Поэтому настало время для второго судьбоносного решения - перехода с ChilliProject обратно на Redmine.</p>
+
+<h2>Процесс</h2>
+
+<p>Собственно, с лирической частью закончено. Теперь о самом процессе. Так как ChilliProject у нас работает на продакшене, с достаточно большой базой тикетов, страниц wiki, файлов и документов, делать перенос сразу на продакшене несколько страшно. Поэтому проще всего использовать vagrant для миграции на локальной машине, а после - проверить, всё ли смигрировало нормально и просто закинуть базу и файлы на продакшен.</p>
+
+<h3>Шаг 1. Инициализация vagrant</h3>
+
+<p>Так как на продакшене используется debian, образ vagrant&#39;а лучше всего использовать тоже debian&#39;овский. Это позволит избежать различных косяков при перекидывании. Добавление 64-х битного debian 7.2 делается очень просто:</p>
+<div class="highlight"><pre><code class="text">vagrant box add debian7.2 https://dl.dropboxusercontent.com/u/197673519/debian-7.2.0.box
+</code></pre></div>
+<p>Далее требуется инициализировать новую виртуалку с debian:</p>
+<div class="highlight"><pre><code class="text">vagrant init debian7.2
+</code></pre></div>
+<p>И профорвардить 3000-й порт для тестирования всего этого. Для этого надо раскомментировать и чуть изменить строчку Vagrantfile:</p>
+<div class="highlight"><pre><code class="text"># config.vm.network :forwarded_port, guest: 80, host: 8080
+</code></pre></div>
+<p>заменить на</p>
+<div class="highlight"><pre><code class="text">config.vm.network :forwarded_port, guest: 3000, host: 3030
+</code></pre></div>
+<h3>Шаг 2. Воссоздание среды</h3>
+
+<p>Ничего сложного, просто ставим Postgres, rvm (по хорошему, надо бы сменить его на chruby, но лень), imagemagick и bundler:</p>
+<div class="highlight"><pre><code class="text">vagrant up
+vagrant ssh
+sudo su
+dpkg-reconfigure locales
+exit
+sudo su -l # refresh locale settings
+apt-get update &amp;&amp; apt-get upgrade
+apt-get install postgresql-9.1 postgresql-server-dev-9.1 libmagickwand-dev vim
+adduser --force-badname --home /var/www/delta-zet.com/data/ delta-zet.com # add user as on the primary server
+su -l delta-zet.com
+\curl -L https://get.rvm.io | bash -s stable
+source ~/.bashrc
+source ~/.bash_profile
+rvm autolibs disable # to disable sudo
+rvm install 2.0.0
+gem install bundler
+</code></pre></div>
+<h3>Шаг 3. Установка Redmine</h3>
+
+<p>Тут вообще всё просто:</p>
+<div class="highlight"><pre><code class="text">sudo su -l postgres
+psql
+create user &quot;delta-zet.com&quot; with password &#39;123456&#39;;
+create database redmine with owner &quot;delta-zet.com&quot;;
+\q
+exit
+su -l delta-zet.com
+wget -O redmine.tar.gz http://www.redmine.org/releases/redmine-2.4.1.tar.gz
+tar -xvf redmine.tar.gz
+ln -s redmine-2.4.1/ redmine
+cd redmine
+cp config/database.yml.example config/database.yml
+vim config/database.yml
+bundle install --without development test
+rake generate_secret_token
+RAILS_ENV=production rake db:migrate
+RAILS_ENV=production REDMINE_LANG=ru rake redmine:load_default_data
+mkdir -p tmp tmp/pdf public/plugin_assets
+chown -R delta-zet.com:delta-zet.com files log tmp public/plugin_assets
+chmod -R 755 files log tmp public/plugin_assets
+ruby script/rails server webrick -e production
+</code></pre></div>
+<p>После этого можно убедиться, что всё работает. Теперь начинается самая интересная часть - перенос.</p>
+
+<h3>Шаг 4. Миграция</h3>
+
+<p>Сначала задампим БД ChilliProject&#39;а:</p>
+<div class="highlight"><pre><code class="text">pg_dump redmine &gt; redmine.sql
+</code></pre></div>
+<p>И импортируем его в vagrant, предварительно очистив тестовую таблицу:</p>
+<div class="highlight"><pre><code class="text">sudo su -l postgres
+psql
+drop database redmine;
+create database redmine with owner &quot;delta-zet.com&quot;;
+\q
+exit
+sudo su -l delta-zet.com
+psql redmine &lt; redmine.sql
+</code></pre></div>
+<p>Правки структуры...</p>
+<div class="highlight"><pre><code class="text">psql redmine
+ALTER TABLE journals RENAME COLUMN created_at TO created_on;
+ALTER TABLE journals RENAME COLUMN activity_type TO journalized_type;
+ALTER TABLE journals RENAME COLUMN journaled_id TO journalized_id;
+UPDATE journals SET journalized_type=&#39;Issue&#39; WHERE journalized_type=&#39;issues&#39;;
+ALTER TABLE wiki_contents ADD comments VARCHAR(250) NULL;
+ALTER TABLE journals RENAME COLUMN changes TO changes_chilli;
+ALTER TABLE journals DROP COLUMN type;
+ALTER TABLE journals DROP COLUMN version;
+</code></pre></div>
+<p>Затем запускаем миграции...</p>
+<div class="highlight"><pre><code class="text">RAILS_ENV=production rake db:migrate
+</code></pre></div>
+<p>Потом просто затариваем директорию, переносим files, прописываем заново workflow&#39;ы, так как они почему-то не смигрировали и радуемся :)</p>
+
+<h2>Заключение</h2>
+
+<p>TODO: Добавить заключение :D</p>
+
+</div>
+
+<div id="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="drakmail" data-lang="ru">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+
+<div id="tags">
+  <h2>Тэги</h2>
+  <a href="/tag/redmine.html">redmine</a>, <a href="/tag/chilliproject.html">chilliproject</a>, <a href="/tag/debian.html">debian</a>, <a href="/tag/postgresql.html">postgresql</a>, <a href="/tag/linux.html">linux</a>
+</div>
+
+
+<div id="comments">
+  <h2>Комментарии</h2>
+  <script>
+    var idcomments_acct = '314a57596771cb184e399cff19cefe37';
+    var idcomments_post_id;
+    var idcomments_post_url;
+  </script>
+  <span id="IDCommentsPostTitle" style="display:none"></span>
+  <script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+</div>
+  
+    <div class="footer">
+      <div class="contact">
+        <p>
+	  Alexander Maslov<br />
+          CTO of <a href="http://delta-zet.com/">Delta Zet llc.</a><br />
+          alexander.maslov@delta-zet.com
+        </p>
+      </div>
+      <div class="contact">
+        <p>
+          <a href="http://github.com/drakmail/">github.com/drakmail</a><br />
+          <a href="http://twitter.com/drakmail/">twitter.com/drakmail</a><br />
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <a href="http://github.com/drakmail/blog">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+    alt="Fork me on GitHub" />
+  </a>
+
+  <!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter20658970 = new Ya.Metrika({id:20658970, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/20658970" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+  </body>
+</html>

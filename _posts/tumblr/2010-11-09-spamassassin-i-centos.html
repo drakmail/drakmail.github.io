@@ -1,0 +1,11 @@
+---
+layout: post
+title: Spamassassin и CentOS
+tags:
+- проблема
+- centos
+- spamassassin
+- trouble
+- myslb
+---
+<p>Недавно столкнулся с проблемой запуска демона spamassassin в CentOS. При попытке запустить демон, вылазила ошибка:<br/><br/></p><blockquote>child process [5201] exited or timed out without signaling production of a PID file: exit 255 at /usr/bin/spamd line 2588.</blockquote><br/>Как оказалось (путем запуска <b>spamd</b> отдельным процессом), надо было запустить команду <b>sa-update</b> для инициализации правил sa. После запуска <b>sa-update</b> проблема была решена.<div class="blogger-post-footer"><img width="1" height="1" src="https://blogger.googleusercontent.com/tracker/5828213583843701230-32198281262394546?l=my-slb.blogspot.com" alt=""/></div>

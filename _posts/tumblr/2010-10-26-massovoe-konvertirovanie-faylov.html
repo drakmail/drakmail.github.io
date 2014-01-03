@@ -1,0 +1,8 @@
+---
+layout: post
+title: Массовое конвертирование файлов
+tags:
+- bash
+- myslb
+---
+<p>Чтобы не забыть.<br/><br/></p><blockquote>#!/bin/bash<br/>for file in `ls *.ext`<br/>do   <br/>iconv -f cp1251 -t UTF-8 -o &#8220;new_$file&#8221; &#8220;$file&#8221;<br/>done</blockquote><br/>и потом, собственно, создаем новую директорию, копируем туда все файлы new*.ext, выполняем<br/><br/><blockquote>#!/bin/bash<br/>for file in `ls`<br/>do   <br/>mv $file ${file:4}<br/>done</blockquote><div class="blogger-post-footer"><img width="1" height="1" src="https://blogger.googleusercontent.com/tracker/5828213583843701230-3198846265772160021?l=my-slb.blogspot.com" alt=""/></div>

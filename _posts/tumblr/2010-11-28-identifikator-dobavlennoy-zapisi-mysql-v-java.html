@@ -1,0 +1,11 @@
+---
+layout: post
+title: Идентификатор добавленной записи mysql в java
+tags:
+- памятка
+- last_insert_id
+- mysql
+- java
+- myslb
+---
+<p>Для его получения надо сделать так:<br/><br/></p><blockquote>statement.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);<br/><br/>//Получаем идентификатор только что добавленной записи<br/>resultSet = statement.getGeneratedKeys();<br/>resultSet.next();<br/>int id = resultSet.getInt(1);<br/></blockquote><br/>В результате id будет хранить в себе идентификатор последней добавленной записи.<div class="blogger-post-footer"><img width="1" height="1" src="https://blogger.googleusercontent.com/tracker/5828213583843701230-5622190448477724580?l=my-slb.blogspot.com" alt=""/></div>

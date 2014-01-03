@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Escalation to zen - Быстрая проверка доступности  порта</title>
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+</head>
+<body>
+  <div class="site">
+    <div class="title">
+      <a href="/">Escalation to zen</a>
+      
+        <a class="extra " href="/index.html">
+          Home
+        </a>
+      
+        <a class="extra " href="/about/">
+          About
+        </a>
+      
+        <a class="extra " href="/tags-cloud.html">
+          Tags
+        </a>
+      
+        <a class="extra " href="/feed.xml">
+          RSS
+        </a>
+      
+        <a class="extra " href="/source/">
+          Source
+        </a>
+      
+    </div>
+  
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.qrcode.min.js"></script>
+
+<button class="get_qr_code">QR код</button>
+<div id="qr"></div>
+<script>
+  $(document).ready(function() {
+    $(".get_qr_code").click(function() {
+      $("#qr").toggle();
+    });
+    $("#qr").qrcode("http://drakmail.ru/2010/04/29/bystraya-proverka-dostupnosti--porta.html");
+  });
+</script>
+
+<div id="post">
+  <h1>Быстрая проверка доступности  порта</h1>
+  <p><b>Реально </b>быстрая команда для проверки открытости любого порта:<br/></p><blockquote>nc -z <a href="http://ftp.server">ftp.server</a> 21 &amp;&amp; echo Up || echo Down      </blockquote>Работает дейтсвительно быстро!<div class="blogger-post-footer"><img width="1" height="1" src="https://blogger.googleusercontent.com/tracker/5828213583843701230-7378964734365581771?l=my-slb.blogspot.com" alt=""/></div>
+
+</div>
+
+<div id="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="drakmail" data-lang="ru">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+
+<div id="tags">
+  <h2>Тэги</h2>
+  <a href="/tag/check%20port.html">check port</a>, <a href="/tag/linux.html">linux</a>, <a href="/tag/%D1%81%D0%B5%D1%82%D1%8C.html">сеть</a>, <a href="/tag/myslb.html">myslb</a>
+</div>
+
+
+<div id="comments">
+  <h2>Комментарии</h2>
+  <script>
+    var idcomments_acct = '314a57596771cb184e399cff19cefe37';
+    var idcomments_post_id;
+    var idcomments_post_url;
+  </script>
+  <span id="IDCommentsPostTitle" style="display:none"></span>
+  <script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+</div>
+  
+    <div class="footer">
+      <div class="contact">
+        <p>
+	  Alexander Maslov<br />
+          CTO of <a href="http://delta-zet.com/">Delta Zet llc.</a><br />
+          alexander.maslov@delta-zet.com
+        </p>
+      </div>
+      <div class="contact">
+        <p>
+          <a href="http://github.com/drakmail/">github.com/drakmail</a><br />
+          <a href="http://twitter.com/drakmail/">twitter.com/drakmail</a><br />
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <a href="http://github.com/drakmail/blog">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+    alt="Fork me on GitHub" />
+  </a>
+
+  <!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter20658970 = new Ya.Metrika({id:20658970, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/20658970" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+  </body>
+</html>

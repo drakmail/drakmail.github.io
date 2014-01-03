@@ -1,0 +1,34 @@
+---
+layout: post
+title: Обработка нажатий вложенного div в javascript
+tags:
+- js
+- jquery
+- webdev
+---
+<p>Недавно встала задача по обработке событий onClick для 2-х div&#8217;ов - один вложен в другой. Пример:</p>
+
+<p><img src="http://media.tumblr.com/tumblr_m7tl6fhyDt1ru3h19.png" alt="вложенные div'ы"/></p>
+
+<p>Мне нужно было обрабатывать нажатия по коричневому div&#8217;у (который был вложен в синий div) так, чтобы onClick для синего div&#8217;а не срабатывал. Мне помог <a href="http://javascript.ru/forum/events/15665-problema-ostanovka-vsplytiya-sobytijj-firefox.html">этот</a> тред на javascript.ru.</p>
+
+<p>Ну и вот пример:</p>
+
+<pre><code>&lt;div id="parent" style="width: 200px;height:200px;background-color: #0000aa;"&gt;
+    &lt;div id="nested" style="width:100px; height:100px; background:#CC6600;"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    $("#parent").click(function() {alert("parent");});
+
+    $("#nested").bind("click", function(e) {
+        alert('nested');
+        stop_bubbling(e);
+    });
+
+    function stop_bubbling(e) {
+        if (e.stopPropagation) e.stopPropagation();
+        else e.cancelBubble = true;
+    }
+&lt;/script&gt;
+</code></pre>

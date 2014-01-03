@@ -1,0 +1,7 @@
+markdown: redcarpet
+pygments: true
+name: Escalation to zen
+description: Drakmail's blog
+url: http://drakmail.ru/
+tag_page_layout: tag
+tag_page_dir: tag

@@ -1,0 +1,12 @@
+---
+layout: post
+title: ISPManager session save path
+tags:
+- cgi
+- php
+- fastcgi
+- session path
+- история успеха
+- myslb
+---
+<p>Если вдруг при использовании ISPManager и PHP в режиме CGI (FastCGI) скрипты будут ругаться на невозможность записать сессию: <br/><br/></p><blockquote>[Fri Jan 14&#160;20:33:36&#160;2011] [warn] mod_fcgid: stderr: PHP Warning:  Unknown: open(/var/lib/php/session/sess_dfb2m61u4ugabc729c3pl8ioc4, O_RDWR) failed: Permission denied (13) in Unknown on line 0<br/>[Fri Jan 14&#160;20:33:36&#160;2011] [warn] mod_fcgid: stderr: PHP Warning:  Unknown: Failed to write session data (files). Please verify that the current setting of session.save_path is correct (/var/lib/php/session) in Unknown on line 0<br/>[Fri Jan 14&#160;20:33:36&#160;2011] [warn] mod_fcgid: stderr: PHP Warning:  session_start() [<a href="http://function.session-start">function.session-start</a>]: open(/var/lib/php/session/sess_dfb2m61u4ugabc729c3pl8ioc4, O_RDWR) failed: Permission denied (13) in /var/www/xxx/yyy.php on line 2<br/></blockquote><br/>То в файле /etc/php.ini надо закомментировать строку <br/><br/><blockquote>session.save_path = /var/lib/php/session/ </blockquote><br/>После этого надо перезапустить веб сервер, и всё заработает.<div class="blogger-post-footer"><img width="1" height="1" src="https://blogger.googleusercontent.com/tracker/5828213583843701230-8798512627542270346?l=my-slb.blogspot.com" alt=""/></div>

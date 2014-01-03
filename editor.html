@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ACE in Action</title>
+<style type="text/css" media="screen">
+    body, html {height: 100%;}
+    #edit_zone {
+        position: relative;
+        height: 90%;
+        width: 50%;
+	float: left;
+    }
+    #output_zone {
+        height: 90%;
+	width: 45%;
+	float: right;
+    }
+    #js_editor {
+	height: 45%;
+	width: 100%;
+    }
+    #html_editor {
+	height: 100%;
+	width: 100%;
+    }
+</style>
+</head>
+<body>
+
+<div id="edit_zone">
+  <div id="html_editor">$JSEDITOR</div>
+  <!-- <div id="js_editor">function foo(items) {
+    var x = "All this is syntax highlighted";
+    return x;
+}
+  </div> -->
+</div>
+
+<div id="output_zone">
+</div>
+
+<div id="control_zone">
+<script src="https://towtruck.mozillalabs.com/towtruck.js"></script>
+<button onclick="TowTruck(this); return false;">Start TowTruck</button>
+</div>
+
+<script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    //var js_editor = ace.edit("js_editor");
+    //js_editor.setTheme("ace/theme/monokai");
+    //js_editor.getSession().setMode("ace/mode/javascript");
+
+    var html_editor = ace.edit("html_editor");
+    html_editor.setTheme("ace/theme/monokai");
+    html_editor.getSession().setMode("ace/mode/html");
+
+    var modified = false;
+
+    function update() {
+	// update output zone with generated content
+	var iframe = document.createElement('iframe');
+	var html = html_editor.getValue();
+	//var js = js_editor.getValue();
+	//html = html.replace("$JSEDITOR", '<script>'+js+'&lt;/script>');
+	document.getElementById("output_zone").innerHTML = "";
+	iframe.style.width = "100%";
+	iframe.style.height = "100%";
+	document.getElementById("output_zone").appendChild(iframe);
+	iframe.contentWindow.document.open();
+	iframe.contentWindow.document.write(html);
+	iframe.contentWindow.document.close();
+    }
+
+    html_editor.getSession().on('change', function(e) {
+	modified = true;
+    });
+
+   setInterval(function() { if (modified === true) { update(); modified = false; } }, 3000);
+
+</script>
+</body>
+</html>

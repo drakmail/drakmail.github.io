@@ -1,0 +1,12 @@
+---
+layout: post
+title: Ускорение Firefox
+tags:
+- ipv6
+- lookup
+- slow
+- dns
+- firefox
+- myslb
+---
+<p>Иногда я встречаюсь с проблемой длительного поиска домена <b>Firefox</b>&#8216;ом (Сообщение &#8220;<i>поиск <a href="http://www.domain_name.com">www.domain_name.com</a> (lookup <a href="http://www.domain_name.com">www.domain_name.com</a>)</i>&#8221; в статусной строке). Немного поугуглив на эту тему, я нашел решение проблемы:<br/><br/></p><ul><li>Открываем страницу <i>about:config</i></li><li>Ищем свойство <b>network.dns.disableIPv6</b></li><li>Ставим значение в <b>true</b></li></ul><br/>Проблема была в том, что Firefox сначала пытался найти ipv6 адрес сайта, а лишь затем искал ipv4. Но так как большинство сайтов сейчас не имеют ipv6 адресов, происходила задержка в несколько секунд.<div class="blogger-post-footer"><img width="1" height="1" src="https://blogger.googleusercontent.com/tracker/5828213583843701230-7598423317014373495?l=my-slb.blogspot.com" alt=""/></div>

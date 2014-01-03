@@ -1,0 +1,17 @@
+---
+layout: default
+title: My Blog Source Code
+page-class: page--source
+permalink: /source/
+---
+
+<div id="repo"></div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/repo.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  $("#repo").repo({user: "drakmail", name: "blog"});
+});
+</script>

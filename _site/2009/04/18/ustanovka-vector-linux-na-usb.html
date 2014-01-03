@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Escalation to zen - Установка Vector Linux на USB.</title>
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+</head>
+<body>
+  <div class="site">
+    <div class="title">
+      <a href="/">Escalation to zen</a>
+      
+        <a class="extra " href="/index.html">
+          Home
+        </a>
+      
+        <a class="extra " href="/about/">
+          About
+        </a>
+      
+        <a class="extra " href="/tags-cloud.html">
+          Tags
+        </a>
+      
+        <a class="extra " href="/feed.xml">
+          RSS
+        </a>
+      
+        <a class="extra " href="/source/">
+          Source
+        </a>
+      
+    </div>
+  
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.qrcode.min.js"></script>
+
+<button class="get_qr_code">QR код</button>
+<div id="qr"></div>
+<script>
+  $(document).ready(function() {
+    $(".get_qr_code").click(function() {
+      $("#qr").toggle();
+    });
+    $("#qr").qrcode("http://drakmail.ru/2009/04/18/ustanovka-vector-linux-na-usb.html");
+  });
+</script>
+
+<div id="post">
+  <h1>Установка Vector Linux на USB.</h1>
+  <p><span class="Apple-style-span" style="  ;font-family:Verdana;font-size:13px;">Для начала необходимо примонтировать iso файл&#8230;<br/><br/><div style="margin-right: 20px; margin-bottom: 20px; margin-left: 20px; margin-top: 5px; "><div class="smallfont" style="margin-bottom: 2px; font-size: 11px; ">Код:</div><pre class="bbcodeblock" dir="ltr" style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: -99999px; padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: inset; border-right-style: inset; border-bottom-style: inset; border-left-style: inset; border-color: initial; width: 98%; height: 34px; text-align: left; overflow-x: auto; overflow-y: auto; background-color: rgb(207, 217, 255); ">mount -t iso9660 -o loop filename.iso /some/mount/point</pre></div><br/>Затем нужно скопировать содержание /some/mount/point/ на flash диск.<br/><br/>И наконец, с помощью установщика slax необходимо запустить скрипт установки загрузчика.<br/><br/><div style="margin-right: 20px; margin-bottom: 20px; margin-left: 20px; margin-top: 5px; "><div class="smallfont" style="margin-bottom: 2px; font-size: 11px; ">Цитата:</div><table cellpadding="3" cellspacing="0" border="0" width="100%"><tbody><tr><td class="bbcodeblock" style="border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: inset; border-right-style: inset; border-bottom-style: inset; border-left-style: inset; border-color: initial; background-color: rgb(207, 217, 255); ">Only one more step is needed to make Slax boot from your USB device or disk: you have to manually navigate to the newly created /boot/ directory and run bootinst.sh script (if you are in Linux) or bootinst.bat script (if you are in Windows).</td></tr></tbody></table></div><a href="http://www.slax.org/documentation_install_slax.php" target="_blank" style="color: rgb(34, 34, 156); "><a href="http://www.slax.org/documentation_install_slax.php">http://www.slax.org/documentation_install_slax.php</a></a><br/></span><div class="blogger-post-footer"><img width="1" height="1" src="https://blogger.googleusercontent.com/tracker/5828213583843701230-2709819895301961154?l=my-slb.blogspot.com" alt=""/></div></p>
+
+</div>
+
+<div id="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="drakmail" data-lang="ru">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+
+<div id="tags">
+  <h2>Тэги</h2>
+  <a href="/tag/live.html">live</a>, <a href="/tag/usb.html">usb</a>, <a href="/tag/vector.html">vector</a>, <a href="/tag/myslb.html">myslb</a>
+</div>
+
+
+<div id="comments">
+  <h2>Комментарии</h2>
+  <script>
+    var idcomments_acct = '314a57596771cb184e399cff19cefe37';
+    var idcomments_post_id;
+    var idcomments_post_url;
+  </script>
+  <span id="IDCommentsPostTitle" style="display:none"></span>
+  <script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+</div>
+  
+    <div class="footer">
+      <div class="contact">
+        <p>
+	  Alexander Maslov<br />
+          CTO of <a href="http://delta-zet.com/">Delta Zet llc.</a><br />
+          alexander.maslov@delta-zet.com
+        </p>
+      </div>
+      <div class="contact">
+        <p>
+          <a href="http://github.com/drakmail/">github.com/drakmail</a><br />
+          <a href="http://twitter.com/drakmail/">twitter.com/drakmail</a><br />
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <a href="http://github.com/drakmail/blog">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+    alt="Fork me on GitHub" />
+  </a>
+
+  <!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter20658970 = new Ya.Metrika({id:20658970, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/20658970" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+  </body>
+</html>

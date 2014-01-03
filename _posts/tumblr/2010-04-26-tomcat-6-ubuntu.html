@@ -1,0 +1,10 @@
+---
+layout: post
+title: Tomcat 6 Ubuntu
+tags:
+- ubuntu
+- tomcat
+- solution
+- myslb
+---
+<p>Решил, наконец, поставить на Ubuntu (раньше приходилось использовать виртуалку с XP) электронный офис, для облегчения разработки и портирования его на GNU/Linux. Проблем возникло всего несколько:<br/><br/></p><ul><li>Логи начали писаться через SYSLOG. Хоть это, может, и хорошо, но мне не очень удобно осуществлять просмотр логов SYSLOG. Поэтому, первое, что я сделал - перенаправил вывод логов в обычный текстовый файл. Это легко делает в файле <i>/etc/init.d/tomcat6</i> , в строке, где запускается $DAEMON (контроллер JVM). Необходимо всего-лишь поправить параметр &#8212;out-file.</li><li>Из-за того, что ЕО разрабатывался еще под 5-й tomcat, а водрузил я его на 6-й, он начал сыпать в лог ошибками:  <b>org.apache.jasper.JasperException</b>: /pageDispetcher.jsp(216,22) <i>Attribute value</i>  (String)request.getSession().getAttribute(&#8220;forwardURL&#8221;)  <i>is quoted with &#8221; which must be escaped when used within the value</i>. Как оказалось, в новом стандарте теги jsp должны заключать значения параметров не в двойные (&#8220;), а в одинарные (&#8216;) кавычки. Для решения этой проблемы необходимо всё в том-же файле <i>/etc/init.d/tomcat6</i> найти первое JAVA_OPTS и добавть к нему в конце &#8220;<i>-Dorg.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING=false</i>&#8221;.</li><li>Ну и третья проблема - установка безопасности, из-за которой без предварительной настройки апплет не может получить доступ к базе данных: необходимо отключить TOMCAT6_SECURITY. Всё в том=же файле  <i>/etc/init.d/tomcat6&#160;</i>изменяем значение TOMCAT6_SECURITY с yes на no - и всё работает :) По крайней мере у меня.</li></ul><div class="blogger-post-footer"><img width="1" height="1" src="https://blogger.googleusercontent.com/tracker/5828213583843701230-1792148860249707051?l=my-slb.blogspot.com" alt=""/></div>
