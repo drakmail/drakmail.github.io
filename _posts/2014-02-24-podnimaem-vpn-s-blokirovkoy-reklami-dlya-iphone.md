@@ -35,11 +35,11 @@ reboot
 
 ### VPN
 
-Затем самое важное - установка VPN сервера. Это совсем не сложно. Если всё делать по мануалу - никаких проблем возникнуть не должно. Я настраивал по https://pleasefeedthegeek.wordpress.com/2012/04/21/l2tp-ubuntu-server-setup-for-ios-clients/ .
+Затем самое важное - установка VPN сервера. Это совсем не сложно. Если всё делать по мануалу - никаких проблем возникнуть не должно. Я настраивал по [этой статье](https://pleasefeedthegeek.wordpress.com/2012/04/21/l2tp-ubuntu-server-setup-for-ios-clients/).
 
 ### Privoxy
 
-Для блокирования рекламы необходимо просто установить privoxy и скопировать ему правила блокирования. Установка privoxy ну очень простая, описана здесь: http://kimondo.co.uk/raspberry-pi-as-an-adblock-server-for-ipad-iphone-android-and-anything-else-on-your-network/ . Далее, чтобы скормить списки AdBlock в privoxy, осталось просто скачать и запустить на сервере этот скрипт: https://raw.github.com/evaryont/bin/master/adblock-to-privoxy (я заменил там некоторые списки на российские). Важно:
+Для блокирования рекламы необходимо просто установить privoxy и скопировать ему правила блокирования. Установка privoxy ну очень простая, описана [здесь](http://kimondo.co.uk/raspberry-pi-as-an-adblock-server-for-ipad-iphone-android-and-anything-else-on-your-network/). Далее, чтобы скормить списки AdBlock в privoxy, осталось просто скачать и запустить на сервере [этот скрипт](https://raw.github.com/evaryont/bin/master/adblock-to-privoxy) (я заменил там некоторые списки на российские). Важно:
 
 1. Не забыть в конфиге privoxy заменить listen_address на IP сервера в VPN.
 2. Следить за тем, чтобы в правилах privoxy было не более 10 списков правил, иначе не запустится.
