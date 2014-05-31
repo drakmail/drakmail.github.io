@@ -1,0 +1,65 @@
+==================================================================
+https://keybase.io/drakmail
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://drakmail.ru
+  * I am drakmail (https://keybase.io/drakmail) on keybase.
+  * I have a public key with fingerprint EE35 9967 F65A 4C60 5CD1  8783 F680 A320 2E71 2256
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "ee359967f65a4c605cd18783f680a3202e712256",
+            "host": "keybase.io",
+            "key_id": "f680a3202e712256",
+            "uid": "46d09c2316395df3922ef2416184f500",
+            "username": "drakmail"
+        },
+        "service": {
+            "hostname": "drakmail.ru",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1401528032,
+    "expire_in": 157680000,
+    "prev": "765963d6fb48840e66f600b1c5f2d028af9aa4b89ddb558099523baf7c1e370c",
+    "seqno": 2,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v0.1.17
+Comment: https://keybase.io/crypto
+
+yMHnAnicbZFdSBRrHMZ31VZd8JgmJYVdjHihLts7nzuzICQK2SmLCNILc5mPd9ZJ
+3VlnZj88alaQpsJuKFjRIU6uQahdREiFSWJppamQIixBH4ogkuAJTyQI+Y7UzaH3
+Zpjn/3uehz//l2mJFrt1ZbJ4teHIX4Z1emwjYDnbcedTEyaoUiPmbsJq4e5HVnxe
+qPk1xWdgbgxCkuY4xiUzNE+JDKBFCWddLCkzLOBJAhDQhRMEzWAOrEbVTQeKEXgd
+OhUVaejHo0hI/Q0f2B1QjAQ4kSBxhuRoSSY5goAyQeEMzlIyDYAJ6lDz8fUQ0ZLG
+19bzSh3W4sCQGlREpDbtVv+PcGoBZPVrqqGKah0a1BiG3236jEa/CYag4PkZ4REU
+n4TWRoYg1HRF9WFuHJGioZiZOAVwmmABSTgwGPYrGvQoJkG70FLomTUwiCJdDM0x
+pMTIAsWyFIAMIzMACLhIy4QECJaXOZ6nBJaTJIGmWcBxNEEKvOwScUi6gIj6ddjg
+UzE3ajJ4L4rUFa+PNwIaxFrGx6qSLFa7xbYnwTycxZ6699c5w0nJP6qv2RZv0hOj
+9sfdXwuG1k+Oh3NI4j97mrVx5fjaO3HEP/16+EvR5baekZL4TGe8tK1/a+7YUFek
+Yik0szq4dLoKnnt15vDThOxTDf9uWCPtuc6O4f7UWFnRQNR50Fo2kK8PlqX8Ibgr
+Hc+vbNK538Hs0MY/zQX3Wyv65rHQ+RTyiRRbbl+3xPM+bmW8jU7tS59PWIgd+DxB
+LHc++sb3NpcfPbRwd/sDWM9ydI8W911/Vs7kR6szuuDD4IjtVmbkwmRsk8QiJdp0
+b5a1cvvS33lz+eFAtDC99MT7F8mrt7PjeuHsn/d6/PbMxVbvjRxxf2jNFp96kGi/
+WnLxzcwOhVQQYw==
+=W8k9
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/drakmail
+
+==================================================================
